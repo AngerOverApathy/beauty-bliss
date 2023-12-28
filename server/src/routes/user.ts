@@ -3,6 +3,7 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { IUser, UserModel } from '../models/user';
 import { UserErrors } from '../errors';
+import { NextFunction } from 'express-serve-static-core';
 
 // Create a new Router object for handling HTTP requests
 const router = Router();
@@ -35,7 +36,7 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // POST endpoint for user login
-router.post("/login", async (req: Request, res: Response) => {
+router.post("/login", verifyToken, async (req: Request, res: Response) => {
     // Extract username and password from the request body
     const {username, password} = req.body;
     try {
@@ -55,7 +56,6 @@ router.post("/login", async (req: Request, res: Response) => {
 
         // Create a JSON Web Token for the user
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-
         // Return the token and user ID
         res.json({ token, userID: user._id });
 
@@ -64,5 +64,29 @@ router.post("/login", async (req: Request, res: Response) => {
         res.status(500).json({ type: err, message: err.message })
     }
 });
+
+export const verifyToken = (
+    req: Request, 
+    res: Response, 
+    next: NextFunction) => {
+    // Extract the Authorization header from the request
+    const authHeader = req.headers.authorization;
+    // Check if the Authorization header is present
+    if (authHeader) {
+        // Verify the JWT token
+        jwt.verify(authHeader, process.env.JWT_SECRET, (err) => {
+            // If there is an error (e.g., token is invalid or expired), return 403 Forbidden status
+            if (err) {
+                return res.sendStatus(403);
+            }
+            // If the token is valid, proceed to the next middleware
+            next();
+        });
+    } else {
+        // If no Authorization header is present, return 401 Unauthorized status
+        return res.sendStatus(401);
+    }
+};
+
 
 export { router as userRouter };
