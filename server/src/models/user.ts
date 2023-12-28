@@ -8,9 +8,11 @@ export interface IUser {
     //purchasedItems: string[];
 }
 
-const userSchema = new Schema<IUser>({
+const UserSchema = new Schema<IUser>({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true},
-    availableMoney: { type: Number, required: true, default: 1000 },
+    availableMoney: { type: Number, required: true, default: 5000 },
     //purchasedItems: { type: Array, required: true, default: [] }
 });
+
+export const UserModel = model<IUser>('user', UserSchema);
