@@ -1,5 +1,8 @@
-import express, { Router, Request, Response } from 'express';
+import { Router, Request, Response } from 'express';
+import bcrypt from 'bcrypt';
 import { UserModel } from '../models/user';
+import { UserErrors } from '../errors';
+
 const router = Router();
 
 router.post("/register", async (req: Request, res: Response) => {
@@ -8,8 +11,10 @@ router.post("/register", async (req: Request, res: Response) => {
     const user = await UserModel.findOne({ username })
 
     if (user) {
-        return res.status(400).json({ message: "User already exists" });
+        return res.status(400).json({ type: UserErrors.USERNAME_ALREADY_EXISTS });
     }
+
+    const newUser = new UserModel({ username, password });
 });
 
 export { router as userRouter };
