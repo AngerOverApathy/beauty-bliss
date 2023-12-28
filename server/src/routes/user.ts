@@ -1,13 +1,13 @@
 import { Router, Request, Response } from 'express';
 import bcrypt from 'bcrypt';
-import { UserModel } from '../models/user';
+import { IUser, UserModel } from '../models/user';
 import { UserErrors } from '../errors';
 
 const router = Router();
 
 router.post("/register", async (req: Request, res: Response) => {
     const {username, password} = req.body;
-    try{
+    try {
         const user = await UserModel.findOne({ username })
 
         if (user) {
@@ -21,6 +21,16 @@ router.post("/register", async (req: Request, res: Response) => {
         return res.json({ message: 'User registered successfully' });
     } catch (err) {
         return res.status(500).json({ type: err, message: err.message });
+    }
+});
+
+router.post("/login", async (req: Request, res: Response) => {
+    const {username, password} = req.body;
+    try {
+        const user: IUser = await UserModel.findOne({ username });
+
+    } catch (err) {
+        res.status(500).json({ type: err, message: err.message })
     }
 });
 
