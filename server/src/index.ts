@@ -12,8 +12,10 @@ app.use(cors());
 
 app.use('/user', userRouter);
 
-mongoose.connect(
-    `mongodb+srv://vee:${dbPassword}@vsza-tech.kk0y3cx.mongodb.net/vsza-tech`
-);
+mongoose.connect(`mongodb+srv://vee:${dbPassword}@vsza-tech.kk0y3cx.mongodb.net/vsza-tech`)
+  .then(() => console.log('Connected to MongoDB'))
+  .catch(err => console.error('Error connecting to MongoDB:', err));
 
-app.listen(3000, () => {console.log('Server started')})
+app.listen(3001, () => {
+    console.log('Server started')
+})
