@@ -13,7 +13,7 @@ export const Navbar = () => {
                 <Link to='/'>Shop</Link>
                 <Link to='/purchased-items'>Purchases</Link>
                 <Link to='/checkout'> <FontAwesomeIcon icon={faShoppingCart} /></Link>
-                <Link to='/'>Shop</Link>
+                <Link to='/auth'>Auth</Link>
             </div>
         </div>
     )
