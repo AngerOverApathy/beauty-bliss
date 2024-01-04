@@ -12,7 +12,7 @@ export const Navbar = () => {
             <div className="navbar-links">
                 <Link to='/'>Shop</Link>
                 <Link to='/purchased-items'>Purchases</Link>
-                <Link to='/checkout'> <FontAwesomeIcon icon= </Link>
+                <Link to='/checkout'> <FontAwesomeIcon icon={faShoppingCart} /></Link>
                 <Link to='/'>Shop</Link>
             </div>
         </div>
