@@ -36,7 +36,7 @@ router.post("/register", async (req: Request, res: Response) => {
 });
 
 // POST endpoint for user login
-router.post("/login", verifyToken, async (req: Request, res: Response) => {
+router.post("/login", async (req: Request, res: Response) => {
     // Extract username and password from the request body
     const {username, password} = req.body;
     try {
