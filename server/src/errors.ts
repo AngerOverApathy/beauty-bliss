@@ -6,4 +6,5 @@ export enum UserErrors {
 
 export enum ProductErrors {
     NO_PRODUCT_FOUND = "No-product-found",
+    NOT_ENOUGH_STOCK = "Not-enough-stock"
 }
