@@ -1,7 +1,10 @@
 import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
+
 import { userRouter } from './routes/user';
+import { productRouter } from './routes/product';
+
 require('dotenv').config(); // Load environment variables from .env file
 
 const dbPassword = process.env.DB_PASSWORD; // Retrieve database password from environment variables
@@ -10,8 +13,8 @@ const app = express(); // Create an Express application
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cors()); // Middleware to enable CORS (Cross-Origin Resource Sharing)
 
-// Register the user routes with the application
-app.use('/user', userRouter);
+app.use('/user', userRouter); // Register the user routes with the application
+app.use('/product', productRouter);
 
 // Connect to MongoDB using the connection string
 mongoose.connect(`mongodb+srv://vee:${dbPassword}@vsza-tech.kk0y3cx.mongodb.net/vsza-tech`)
