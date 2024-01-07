@@ -16,4 +16,4 @@ const ProductSchema = new Schema<IProduct>({
     stockQuantity: { type: Number, required: true, min: [0, "Stock can't be below 0"] },
 });
 
-export const ProductModel = model<IProduct>("Product", ProductSchema);
+// export const ProductModel = model<IProduct>("Product", ProductSchema);
