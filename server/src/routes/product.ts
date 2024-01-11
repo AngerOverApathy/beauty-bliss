@@ -70,7 +70,17 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response) => {
             // If the user doesn't have enough money, return an error response
             return res.status(400).json({ type: ProductErrors.NO_AVAILABLE_MONEY })
         }
+
+        user.availableMoney -= totalPrice // Deduct the total price from the user's available money
+        user.purchasedItems.push(...productIDs) // Add the purchased items to the user's purchasedItems array
         
+        await user.save() // Save the user to the database
+        await ProductModel.updateMany(
+            { _id: { $in: productIDs } }, 
+            { $inc: { stockQuantity: -1 } }
+        ) // Update the stock quantity of the purchased products
+
+        res.json({purchasedItems: user.purchasedItems}) // Send the list of purchased items as JSON response
     } catch (err) {
         // In case of any errors, respond with a 400 status and the error message
         res.status(400).json({ err })
