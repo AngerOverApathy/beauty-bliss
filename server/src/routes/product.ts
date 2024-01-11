@@ -65,6 +65,11 @@ router.post('/checkout', verifyToken, async (req: Request, res: Response) => {
             // Add the price for this item to the total price
             totalPrice += product.price * cartItems[item]
         }
+
+        if (user.availableMoney < totalPrice) {
+            // If the user doesn't have enough money, return an error response
+            return res.status(400).json({ type: ProductErrors.NO_AVAILABLE_MONEY })
+        }
         
     } catch (err) {
         // In case of any errors, respond with a 400 status and the error message
