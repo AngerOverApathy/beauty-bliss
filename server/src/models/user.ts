@@ -14,7 +14,7 @@ const UserSchema = new Schema<IUser>({
     username: { type: String, required: true, unique: true }, // Username must be unique and is required
     password: { type: String, required: true }, // Password is required
     availableMoney: { type: Number, required: true, default: 5000 }, // Available money with a default value of 5000
-    purchasedItems: [{ type: Schema.Types.ObjectId, ref: 'product', default: [] }] // Array of product IDs with a default
+    purchasedItems: [{ type: Schema.Types.ObjectId, ref: 'product', default: [] }] // Array of product IDs with a default of no purchased items
 });
 
 // Create a model from the schema to interact with the 'user' collection
