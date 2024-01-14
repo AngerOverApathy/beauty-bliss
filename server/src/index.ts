@@ -23,5 +23,5 @@ mongoose.connect(`mongodb+srv://vee:${dbPassword}@vsza-tech.kk0y3cx.mongodb.net/
 
 // Start the server on port 3001
 app.listen(3001, () => {
-    console.log('Server started') // Log a message when the server starts successfully
+    console.log('Server started on http://localhost:3001') // Log a message when the server starts successfully
 })
