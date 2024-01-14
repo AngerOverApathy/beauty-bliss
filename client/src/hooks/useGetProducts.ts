@@ -8,14 +8,12 @@ export const useGetProducts = () => {
 
   const fetchProducts = async () => {
     try {
-        console.log("Headers being sent:", headers);
-        const fetchedProducts = await axios.get("http://localhost:3001/product", { headers });
-        setProducts(fetchedProducts.data.products);
+      const fetchedProducts = await axios.get("http://localhost:3001/product", { headers});
+      setProducts(fetchedProducts.data.products);
     } catch (err) {
-        console.error(err);
-        alert("ERROR: Something went wrong.");
+      alert('ERROR: Something went wrong')
     }
-};
+  };
 
   useEffect(() => {
     fetchProducts();

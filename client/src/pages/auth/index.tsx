@@ -25,8 +25,12 @@ const Register = () => {
         event.preventDefault(); // Prevents the default form submit action.
         try {
             // Sends a POST request to register a new user with entered username and password.
-            await axios.post('http://localhost:3001/user/register', { username, password });
+            await axios.post('http://localhost:3001/user/register', { 
+                username, 
+                password 
+            });
             alert('User registered, now login!');
+
         } catch (err) {
             // Error handling based on the custom error types defined in UserErrors.
             if (err?.response?.data?.type === UserErrors.USERNAME_ALREADY_EXISTS) {
@@ -69,11 +73,9 @@ const Register = () => {
 
 // Login Component: Manages the login functionality for existing users.
 const Login = () => {
-    // useState hooks to manage state for username and password.
     const [username, setUsername] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    // useCookies hook to manage cookies; specifically, the access token.
-    const [_, setCookies] = useCookies(['access_token']);
+    const [_, setCookies] = useCookies(['access_token']); // useCookies hook to manage cookies; specifically, the access token.
 
     // useNavigate hook for redirecting the user after successful login.
     const navigate = useNavigate();
@@ -83,9 +85,12 @@ const Login = () => {
         event.preventDefault(); // Prevents the default form submit action.
         try {
             // Sends a POST request to login the user with entered username and password.
-            const result = await axios.post('http://localhost:3001/user/login', { username, password });
+            const result = await axios.post('http://localhost:3001/user/login', { 
+                username, 
+                password 
+            });
             // Setting the access token in cookies and userID in local storage.
-            setCookies('access_token', result.data.access_token);
+            setCookies('access_token', result.data.token);
             localStorage.setItem('userID', result.data.userID);
             // Redirecting to the home page after successful login.
             navigate('/');
