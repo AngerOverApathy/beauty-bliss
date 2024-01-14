@@ -1,4 +1,5 @@
 import { useGetProducts } from "../../hooks/useGetProducts";
+import { Product } from './product'
 
 export const ShopPage = () => {
     const { products } = useGetProducts();
@@ -6,10 +7,7 @@ export const ShopPage = () => {
         <div className='shop'>
             <div className='products'>
                 {products.map((product) => (
-                    <div>
-                        {product.productName}
-                        {product.price}
-                    </div>
+                    <Product product={product}/>
                 ))}
             </div>
         </div>

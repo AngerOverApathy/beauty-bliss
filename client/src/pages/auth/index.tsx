@@ -1,8 +1,9 @@
 import { useState, SyntheticEvent } from 'react';
-import { UserErrors } from '../../errors'; // Custom error types
+import { UserErrors } from '../../models/errors'; // Custom error types
 import { useCookies } from 'react-cookie'; // Hook for managing cookies
 import { useNavigate } from 'react-router-dom'; // Hook for navigation
 import axios from 'axios'; // Axios for HTTP requests
+import './style.css'
 
 // AuthPage Component: A wrapper component that renders both Register and Login components.
 export const AuthPage = () => {
