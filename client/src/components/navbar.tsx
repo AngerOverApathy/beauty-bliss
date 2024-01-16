@@ -6,11 +6,9 @@ import { useContext } from 'react';
 import { useCookies } from 'react-cookie';
 
 export const Navbar = () => {
-    const { availableMoney, isAuthenticated } = useContext<IShopContext>(ShopContext)
-    const [_, setCookies] = useCookies(['access_token']) // eslint-disable-line @typescript-eslint/no-unused-vars
+    const { availableMoney, isAuthenticated, setIsAuthenticated } = useContext<IShopContext>(ShopContext)
     const logout = () => {
-        localStorage.clear()
-        setCookies("access_token", null)
+        setIsAuthenticated(false)
     }
 
     return (

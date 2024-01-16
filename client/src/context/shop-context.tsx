@@ -4,6 +4,7 @@ import { IProduct } from '../models/interfaces';
 import { useGetToken } from '../hooks/useGetToken';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useCookies } from 'react-cookie';
 
 export interface IShopContext {
     addToCart: (itemId: string) => void;
@@ -34,10 +35,11 @@ const defaultVal: IShopContext = {
 export const ShopContext = createContext<IShopContext>(defaultVal)
 
 export const ShopContextProvider = (props) => {
+    const [cookies, setCookies] = useCookies(['access_token'])
     const [cartItems, setCartItems] = useState<{string: number} | {}>({})
     const [availableMoney, setAvailableMoney] = useState<number>(0)
     const [purchasedItems, setPurchasedItems] = useState<IProduct[]>([])
-    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(cookies.access_token !== null)
 
     const { products } = useGetProducts()
     const { headers } = useGetToken()
@@ -134,7 +136,14 @@ export const ShopContextProvider = (props) => {
         fetchAvailableMoney();
         fetchPurchasedItems();
         }
-    }, [])
+    }, [isAuthenticated])
+
+    useEffect(() => {
+        if (!isAuthenticated) {
+            localStorage.clear()
+            setCookies('access_token', null)
+        }
+    }, [isAuthenticated])
 
     const contextValue: IShopContext = {
         addToCart,
