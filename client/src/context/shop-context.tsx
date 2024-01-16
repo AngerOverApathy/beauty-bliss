@@ -1,4 +1,4 @@
-import { useState, createContext } from 'react';
+import { useState, createContext, useEffect } from 'react';
 import { useGetProducts } from '../hooks/useGetProducts';
 import { IProduct } from '../models/interfaces';
 import { useGetToken } from '../hooks/useGetToken';
@@ -12,6 +12,7 @@ export interface IShopContext {
     getCartItemCount: (itemId: string) => number;
     getTotalCartAmount?: () => number;
     checkout: () => void;
+    availableMoney: number;
 }
 
 const defaultVal: IShopContext = {
@@ -20,17 +21,33 @@ const defaultVal: IShopContext = {
     updateCartItemCount: () => null,
     getCartItemCount: () => 0,
     getTotalCartAmount: () => 0,
-    checkout: () => null
+    checkout: () => null,
+    availableMoney: 0
 }
 
 export const ShopContext = createContext<IShopContext>(defaultVal)
 
 export const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState<{string: number} | {}>({})
+    const [availableMoney, setAvailableMoney] = useState<number>(0)
 
     const { products } = useGetProducts()
     const { headers } = useGetToken()
     const navigate = useNavigate()
+
+    const fetchAvailableMoney = async () => {
+        try {
+            const res = await axios.get(
+                `http://localhost:3001/user/availale-money/${localStorage.getItem('UserID'
+                )}`, 
+                { headers }
+                )
+                
+            setAvailableMoney(res.data.availableMoney)
+        } catch (err) {
+            alert('ERROR: Something went wrong. Please try again later.')
+        }
+    }
 
     const getCartItemCount = (itemId: string): number => {
         if (itemId in cartItems) {
@@ -84,13 +101,18 @@ export const ShopContextProvider = (props) => {
         }
     }
 
+    useEffect(() => {
+        fetchAvailableMoney();
+    }, [])
+
     const contextValue: IShopContext = {
         addToCart,
         removeFromCart,
         updateCartItemCount,
         getCartItemCount,
         getTotalCartAmount,
-        checkout
+        checkout,
+        availableMoney
     }
 
     return (
