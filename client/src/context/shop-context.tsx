@@ -1,6 +1,9 @@
 import { useState, createContext } from 'react';
 import { useGetProducts } from '../hooks/useGetProducts';
 import { IProduct } from '../models/interfaces';
+import { useGetToken } from '../hooks/useGetToken';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export interface IShopContext {
     addToCart: (itemId: string) => void;
@@ -8,6 +11,7 @@ export interface IShopContext {
     updateCartItemCount: (newAmount: number, itemId: string) => void;
     getCartItemCount: (itemId: string) => number;
     getTotalCartAmount?: () => number;
+    checkout: () => void;
 }
 
 const defaultVal: IShopContext = {
@@ -15,7 +19,8 @@ const defaultVal: IShopContext = {
     removeFromCart: () => null,
     updateCartItemCount: () => null,
     getCartItemCount: () => 0,
-    getTotalCartAmount: () => 0
+    getTotalCartAmount: () => 0,
+    checkout: () => null
 }
 
 export const ShopContext = createContext<IShopContext>(defaultVal)
@@ -24,6 +29,8 @@ export const ShopContextProvider = (props) => {
     const [cartItems, setCartItems] = useState<{string: number} | {}>({})
 
     const { products } = useGetProducts()
+    const { headers } = useGetToken()
+    const navigate = useNavigate()
 
     const getCartItemCount = (itemId: string): number => {
         if (itemId in cartItems) {
@@ -66,12 +73,24 @@ export const ShopContextProvider = (props) => {
         return totalAmount;
     }
 
+    const checkout = async () => {
+        const body = { customerID: localStorage.getItem('userID'), cartItems }
+        try {
+            await axios.post('http://localhost:3001/product/checkout', body, { headers })
+        
+        navigate('/')
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
     const contextValue: IShopContext = {
         addToCart,
         removeFromCart,
         updateCartItemCount,
         getCartItemCount,
-        getTotalCartAmount
+        getTotalCartAmount,
+        checkout
     }
 
     return (
