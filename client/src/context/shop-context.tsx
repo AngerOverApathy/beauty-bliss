@@ -7,7 +7,7 @@ export interface IShopContext {
     removeFromCart: (itemId: string) => void;
     updateCartItemCount: (newAmount: number, itemId: string) => void;
     getCartItemCount: (itemId: string) => number;
-    getTotalCartAmount?: () => void;
+    getTotalCartAmount?: () => number;
 }
 
 const defaultVal: IShopContext = {
@@ -15,7 +15,7 @@ const defaultVal: IShopContext = {
     removeFromCart: () => null,
     updateCartItemCount: () => null,
     getCartItemCount: () => 0,
-    getTotalCartAmount: () => null
+    getTotalCartAmount: () => 0
 }
 
 export const ShopContext = createContext<IShopContext>(defaultVal)
@@ -53,7 +53,7 @@ export const ShopContextProvider = (props) => {
         setCartItems((prev) => ({...prev, [itemId]: newAmount}))
     }
 
-    const getTotalCartAmount = () => {
+    const getTotalCartAmount = (): number => {
         let totalAmount = 0;
         for (const item in cartItems) {
             if (cartItems[item] > 0) {
@@ -62,6 +62,8 @@ export const ShopContextProvider = (props) => {
                 totalAmount += cartItems[item] * itemInfo.price
             }
         }
+
+        return totalAmount;
     }
 
     const contextValue: IShopContext = {
