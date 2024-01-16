@@ -43,7 +43,9 @@ export const ShopContextProvider = (props) => {
                 )}`, 
                 { headers }
                 )
-                
+            
+            setCartItems({})
+            fetchAvailableMoney()
             setAvailableMoney(res.data.availableMoney)
         } catch (err) {
             alert('ERROR: Something went wrong. Please try again later.')
