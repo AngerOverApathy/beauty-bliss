@@ -1,24 +1,29 @@
 import { useState, createContext } from 'react';
+import { useGetProducts } from '../hooks/useGetProducts';
+import { IProduct } from '../models/interfaces';
 
 export interface IShopContext {
     addToCart: (itemId: string) => void;
     removeFromCart: (itemId: string) => void;
     updateCartItemCount: (newAmount: number, itemId: string) => void;
     getCartItemCount: (itemId: string) => number;
+    getTotalCartAmount?: () => void;
 }
 
 const defaultVal: IShopContext = {
     addToCart: () => null,
     removeFromCart: () => null,
     updateCartItemCount: () => null,
-    getCartItemCount: () => 0
+    getCartItemCount: () => 0,
+    getTotalCartAmount: () => null
 }
 
 export const ShopContext = createContext<IShopContext>(defaultVal)
 
 export const ShopContextProvider = (props) => {
-
     const [cartItems, setCartItems] = useState<{string: number} | {}>({})
+
+    const { products } = useGetProducts()
 
     const getCartItemCount = (itemId: string): number => {
         if (itemId in cartItems) {
@@ -43,14 +48,28 @@ export const ShopContextProvider = (props) => {
     }
 
     const updateCartItemCount = (newAmount: number, itemId: string) => {
+        if (newAmount < 0) return;
 
+        setCartItems((prev) => ({...prev, [itemId]: newAmount}))
+    }
+
+    const getTotalCartAmount = () => {
+        let totalAmount = 0;
+        for (const item in cartItems) {
+            if (cartItems[item] > 0) {
+                let itemInfo: IProduct = products.find((product: IProduct) => product._id === item)
+                
+                totalAmount += cartItems[item] * itemInfo.price
+            }
+        }
     }
 
     const contextValue: IShopContext = {
         addToCart,
         removeFromCart,
         updateCartItemCount,
-        getCartItemCount
+        getCartItemCount,
+        getTotalCartAmount
     }
 
     return (
