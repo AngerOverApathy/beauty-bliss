@@ -21,7 +21,10 @@ export const Product = (props: Props) => {
                 <p>{description}</p>
                 <p>${price}</p>
             </div>
-            <button className="addToCartBttn" onClick={() => addToCart(_id)}>Add to Cart</button>
+            
+            <button className="addToCartBttn" onClick={() => addToCart(_id)}>
+                Add to Cart
+            </button>
 
             <div className='stock-quantity'>
                 {stockQuantity === 0 && <h1>Out of Stock</h1>}

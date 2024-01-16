@@ -3,10 +3,10 @@ import { useState, createContext } from 'react';
 export interface IShopContext {
     addToCart: (itemId: string) => void;
     removeFromCart: (itemId: string) => void;
-    updateCartItemCount: (itemId: string) => void;
+    updateCartItemCount: (newAmount: number, itemId: string) => void;
 }
 
-const defaultVal:IShopContext = {
+const defaultVal: IShopContext = {
     addToCart: () => null,
     removeFromCart: () => null,
     updateCartItemCount: () => null
@@ -24,6 +24,7 @@ export const ShopContextProvider = (props) => {
         } else {
             setCartItems((prev) => ({...prev, [itemId]: prev[itemId] + 1}))
         }
+    }
     
     const removeFromCart = (itemId: string) => {
 
@@ -39,8 +40,10 @@ export const ShopContextProvider = (props) => {
         updateCartItemCount
     }
 
-    return <ShopContext.Provider value={contextValue}>
-                {props.children}
-            </ShopContext.Provider>
+    return (
+        <ShopContext.Provider value={contextValue}>
+            {props.children}
+        </ShopContext.Provider>
+    )
 }
 
