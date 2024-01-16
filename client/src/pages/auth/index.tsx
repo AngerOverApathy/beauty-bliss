@@ -1,7 +1,8 @@
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent, useContext } from 'react';
 import { UserErrors } from '../../models/errors'; // Custom error types
 import { useCookies } from 'react-cookie'; // Hook for managing cookies
 import { useNavigate } from 'react-router-dom'; // Hook for navigation
+import { ShopContext, IShopContext } from '../../context/shop-context'; // ShopContext for managing state
 import axios from 'axios'; // Axios for HTTP requests
 import './style.css'
 
@@ -80,6 +81,7 @@ const Login = () => {
 
     // useNavigate hook for redirecting the user after successful login.
     const navigate = useNavigate();
+    const {setIsAuthenticated} = useContext<IShopContext>(ShopContext);
 
     // Function to handle the login form submission.
     const handleSubmit = async (event: SyntheticEvent) => {
@@ -93,6 +95,7 @@ const Login = () => {
             // Setting the access token in cookies and userID in local storage.
             setCookies('access_token', result.data.token);
             localStorage.setItem('userID', result.data.userID);
+            setIsAuthenticated(true);
             // Redirecting to the home page after successful login.
             navigate('/');
         } catch (err) {
