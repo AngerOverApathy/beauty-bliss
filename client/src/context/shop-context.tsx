@@ -38,7 +38,8 @@ export const ShopContextProvider = (props) => {
     const fetchAvailableMoney = async () => {
         try {
             const res = await axios.get(
-                `http://localhost:3001/user/availale-money/${localStorage.getItem('UserID'
+                `http://localhost:3001/user/available-money/${localStorage.getItem(
+                    'userID'
                 )}`, 
                 { headers }
                 )
