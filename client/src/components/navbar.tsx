@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons'; 
 import { ShopContext, IShopContext } from '../context/shop-context';
 import { useContext } from 'react';
-import { useCookies } from 'react-cookie';
 
 export const Navbar = () => {
     const { availableMoney, isAuthenticated, setIsAuthenticated } = useContext<IShopContext>(ShopContext)
