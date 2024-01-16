@@ -130,8 +130,10 @@ export const ShopContextProvider = (props) => {
     }
 
     useEffect(() => {
+        if (isAuthenticated) {
         fetchAvailableMoney();
         fetchPurchasedItems();
+        }
     }, [])
 
     const contextValue: IShopContext = {
